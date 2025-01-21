@@ -1,0 +1,47 @@
+version: '2.32.3'
+
+
+services:
+  pg:
+    image: postgres:alpine
+    container_name: pg
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 1
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  bot:
+    build: .
+    image: evos_bot:alpine
+    container_name: evos_con
+    restart: always
+    depends_on:
+      - pg
+    command: sh -c "alembic revision --autogenerate -m 'Create a baseline migrations' &&
+      alembic upgrade head &&
+      python3 main.py"
+
+
+  web:
+    build: .
+    image: web_admin:alpine
+    container_name: web_admin
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pg
+    command: sh -c "uvicorn web.app:app --host web --port 8000"
+
+
+
+volumes:
+  pgdata:
+
+
+
+
+
