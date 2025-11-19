@@ -1,4 +1,4 @@
-import os
+from os import getenv
 from logging.config import fileConfig
 
 from dotenv import load_dotenv
@@ -7,7 +7,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from db.models import metadata
+from db import Base
 from utils.settings import ENV_PATH
 
 load_dotenv(ENV_PATH)
@@ -18,7 +18,7 @@ config = context.config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-config.set_main_option("sqlalchemy.url", os.getenv("DB_URl"))
+config.set_main_option("sqlalchemy.url", getenv("DB_URl"))
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
@@ -26,7 +26,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = metadata
+target_metadata = Base.metadata
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

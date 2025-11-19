@@ -22,7 +22,7 @@ services:
       - pg
     command: sh -c "alembic revision --autogenerate -m 'Create a baseline migrations' &&
       alembic upgrade head &&
-      python3 main.py"
+      python3 start.py"
 
 
   web:

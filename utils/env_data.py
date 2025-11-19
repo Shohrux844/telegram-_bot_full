@@ -1,8 +1,5 @@
 from os import getenv
-from os.path import join
-
 from dotenv import load_dotenv
-
 from utils.settings import BASE_DIR, ENV_PATH
 
 load_dotenv(ENV_PATH)
